@@ -1,0 +1,29 @@
+/* CSS declarations go here */
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+}
+#editor-title {
+	background: #393F4F;
+	color: white;
+	margin: 0;
+	height: 40px;
+	font-size: 14px;
+	line-height: 40px;
+	font-family: 'Hiragino Sans GB', 'Arial', 'Microsoft Yahei';
+	font-weight: normal;
+	padding: 0 20px;
+}
+
+#mindFileList {
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 3
+}
+#fileList {
+	height: 420px;
+	overflow-y:auto;
+}

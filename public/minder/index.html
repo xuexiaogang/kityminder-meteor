@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>KityMinder</title>
+
+	<link href="favicon.ico" type="image/x-icon" rel="shortcut icon">
+
+	<!-- bower:css -->
+	<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="../bower_components/codemirror/lib/codemirror.css" />
+	<link rel="stylesheet" href="../bower_components/hotbox/hotbox.css" />
+	<link rel="stylesheet" href="../bower_components/kityminder-core/dist/kityminder.core.css" />
+	<link rel="stylesheet" href="../bower_components/color-picker/dist/color-picker.min.css" />
+	<!-- endbower -->
+
+	<link rel="stylesheet" href="kityminder.editor.min.css">
+
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			overflow: hidden;
+		}
+		div.editor-title {
+			background: #393F4F;
+			color: white;
+			margin: 0;
+			height: 40px;
+			font-size: 14px;
+			line-height: 40px;
+			font-family: 'Hiragino Sans GB', 'Arial', 'Microsoft Yahei';
+			font-weight: normal;
+			padding: 0 20px;
+		}
+		div.minder-editor-container {
+			position: absolute;
+			top: 40px;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	</style>
+</head>
+<body ng-app="kityminderDemo" ng-controller="MainController">
+    
+    <div class="editor-title" id="openfile">KityMinder Editor - Powered By FEX  拖动文件到这里打开 <a id ="savefile">保存文件</a> <a id ="savesvg">保存图片</a></div>
+    <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
+    <script>
+var holder = document.getElementById('openfile'); 
+holder.ondragover = function () { return false; };
+holder.ondragend = function () { return false; };
+holder.ondrop = function (e) {
+    console.log("import file");
+  e.preventDefault();
+  var file = e.dataTransfer.files[0],
+      reader = new FileReader();
+  reader.onload = function (event) {
+      editor.minder.importJson(JSON.parse(reader.result));
+  };
+  reader.readAsText(file);
+  return false;
+};
+var savefilebutton = document.getElementById('savefile');
+savefilebutton.onclick = function (e) {
+    console.log("savefile");
+    e.preventDefault();
+    var data=JSON.stringify(editor.minder.exportJson());
+    var el = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+       if (el) {
+           el.href = 'data:text/plain,' + data;
+           el.download = editor.minder.getRoot().data.text + '.km';;
+           var event = document.createEvent('MouseEvents');
+            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+           el.dispatchEvent(event);
+        }
+    return false;
+};
+var savesvgbutton = document.getElementById('savesvg');
+savesvgbutton.onclick = function (e) {
+    console.log("savesvgfile");
+    e.preventDefault();
+    editor.minder.exportData("svg","").then(function(data){
+        var el = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+       if (el) {
+           el.href = 'data:text/plain,' + data;
+           el.download = editor.minder.getRoot().data.text + '.svg';;
+           var event = document.createEvent('MouseEvents');
+            event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+           el.dispatchEvent(event);
+        }
+    });
+    
+    return false;
+};
+</script>
+
+<!-- bower:js -->
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="../bower_components/codemirror/lib/codemirror.js"></script>
+<script src="../bower_components/codemirror/mode/xml/xml.js"></script>
+<script src="../bower_components/codemirror/mode/javascript/javascript.js"></script>
+<script src="../bower_components/codemirror/mode/css/css.js"></script>
+<script src="../bower_components/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+<script src="../bower_components/codemirror/mode/markdown/markdown.js"></script>
+<script src="../bower_components/codemirror/addon/mode/overlay.js"></script>
+<script src="../bower_components/codemirror/mode/gfm/gfm.js"></script>
+<script src="../bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+<script src="../bower_components/marked/lib/marked.js"></script>
+<script src="../bower_components/kity/dist/kity.min.js"></script>
+<script src="../bower_components/hotbox/hotbox.js"></script>
+<script src="../bower_components/json-diff/json-diff.js"></script>
+<script src="../bower_components/kityminder-core/dist/kityminder.core.min.js"></script>
+<script src="../bower_components/color-picker/dist/color-picker.min.js"></script>
+<!-- endbower -->
+
+<script src="kityminder.editor.min.js"></script>
+
+
+<script>
+	angular.module('kityminderDemo', ['kityminderEditor'])
+			.config(function (configProvider) {
+				configProvider.set('imageUpload', '../server/imageUpload.php');
+			})
+			.controller('MainController', function($scope) {
+				$scope.initEditor = function(editor, minder) {
+					window.editor = editor;
+					window.minder = minder;
+				};
+			});
+
+</script>
+
+</html>

@@ -1,0 +1,1 @@
+Minderjs = new Mongo.Collection('minderjs');

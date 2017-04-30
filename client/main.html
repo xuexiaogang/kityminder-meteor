@@ -1,0 +1,85 @@
+<head>
+  <title>kityminder-meteor</title>
+
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
+  <link rel="stylesheet" href="bower_components/hotbox/hotbox.css" />
+  <link rel="stylesheet" href="bower_components/kityminder-core/dist/kityminder.core.css" />
+  <link rel="stylesheet" href="bower_components/color-picker/dist/color-picker.min.css" />
+  <link rel="stylesheet" href="minder/kityminder.editor.min.css">
+  <!-- 这些js文件通过 静态方式引入 -->
+  <script src="bower_components/jquery/dist/jquery.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-ui-router/angular-ui-router.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/codemirror/lib/codemirror.js"></script>
+  <script src="bower_components/codemirror/mode/xml/xml.js"></script>
+  <script src="bower_components/codemirror/mode/javascript/javascript.js"></script>
+  <script src="bower_components/codemirror/mode/css/css.js"></script>
+  <script src="bower_components/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+  <script src="bower_components/codemirror/mode/markdown/markdown.js"></script>
+  <script src="bower_components/codemirror/addon/mode/overlay.js"></script>
+  <script src="bower_components/codemirror/mode/gfm/gfm.js"></script>
+  <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+  <script src="bower_components/marked/lib/marked.js"></script>
+  <script src="bower_components/kity/dist/kity.min.js"></script>
+  <script src="bower_components/hotbox/hotbox.js"></script>
+  <script src="bower_components/json-diff/json-diff.js"></script>
+  <script src="bower_components/kityminder-core/dist/kityminder.core.min.js"></script>
+  <script src="bower_components/color-picker/dist/color-picker.min.js"></script>
+  <script src="minder/kityminder.editor.min.js"></script>
+
+</head>
+
+<body ng-app="kityminderDemo" ng-controller="MainController">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="input-group">
+        <input type="text" ng-model="newfilename" class="form-control" placeholder=" 输入新建文件名 ...">
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="newfile(newfilename);">新建</button>
+        <button class="btn btn-default" type="button" ng-click="showlist=true;">打开</button>
+        </span>
+      </div>
+    </div>
+    <!-- 几个提示 -->
+    <div class="col-md-4" ng-show="showinfo" ng-click="showinfo=false;">
+      <div class="alert alert-warning alert-dismissible" role="alert">
+        <strong>提示!</strong>文件已经存在. 可点击打开 <a href="/{{newfilename}}" target="_self" class="alert-link">{{newfilename}}</a>
+      </div>
+    </div>
+    <div class="col-md-4" ng-show="createfilestatus" ng-click="createfilestatus=false;">
+      <div class="alert alert-success alert-dismissible" role="alert">
+        <strong>提示!</strong>创建文件成功. 可点击打开 <a href="/{{newfilename}}" target="_self" class="alert-link">{{newfilename}}</a>
+      </div>
+    </div>
+    <div class="col-md-4" ng-show="inputfilename" ng-click="inputfilename=false;">
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <strong>提示!</strong>请输入文件名称
+      </div>
+    </div>
+  </div>
+  <!-- mindFileList 显示脑图列表 -->
+<div class="row" ng-show="showlist" id="mindFileList" >
+  <div class="col-md-4"></div>
+  <div class="col-md-4">
+  <div class="panel panel-primary">
+    <div class="panel-heading">文件数量 {{mindlist.length}}<button type="button" class="close" ng-click="showlist=false;"><span>&times;</span></button></div>
+    
+    <div class="panel-body">
+      <input type="text" ng-model="search" class="form-control" placeholder="输入文件名进行过滤">
+       <ul class="list-group" id="fileList" >
+          <li class="list-group-item" ng-repeat="task in mindlist | filter:{mid:search}">
+            <a href="/{{task.mid}}" target="_self" class="alert-link">{{task.mid}}</a>
+          </li>
+        </ul>
+    </div>
+  </div>
+</div>
+</div>
+  <div>
+    <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
+  </div>
+
+</body>
