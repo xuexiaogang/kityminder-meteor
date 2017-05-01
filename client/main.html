@@ -29,20 +29,22 @@
   <script src="bower_components/kityminder-core/dist/kityminder.core.min.js"></script>
   <script src="bower_components/color-picker/dist/color-picker.min.js"></script>
   <script src="minder/kityminder.editor.min.js"></script>
-
 </head>
 
 <body ng-app="kityminderDemo" ng-controller="MainController">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="input-group">
         <input type="text" ng-model="newfilename" class="form-control" placeholder=" 输入新建文件名 ...">
         <span class="input-group-btn">
         <button class="btn btn-default" type="button" ng-click="newfile(newfilename);">新建</button>
         <button class="btn btn-default" type="button" ng-click="showlist=true;">打开</button>
+        <button class="btn btn-default" type="button" id="downfile">下载文件</button>
+        <button class="btn btn-default" type="button" id="savesvg">下载图片</button>
         </span>
       </div>
     </div>
+    <div id="importfile" >拖动km格式的百度脑图文件来此导入</div>
     <!-- 几个提示 -->
     <div class="col-md-4" ng-show="showinfo" ng-click="showinfo=false;">
       <div class="alert alert-warning alert-dismissible" role="alert">
@@ -81,5 +83,5 @@
   <div>
     <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
   </div>
-
+<script src="minder/import_down.js"></script>
 </body>
