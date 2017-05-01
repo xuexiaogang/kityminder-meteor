@@ -1,5 +1,5 @@
 // 将此地址修改本服务器地址
-var serverUrl  ="http://localhost:3000";
+
 // 初始化一个公共的 测试脑图，默认首页打开的时候展示
 Meteor.startup(() => {
 	if (Minderjs.find().count()===0) {
@@ -46,6 +46,6 @@ Picker.route('/upload', function(params, req, res, next) {
 	upload(req, res, function (err) {
 		// 返回的内容根据 kityminder 要的值返回
 		// req.file.filename 上传后的文件名
-		res.end('{"errno":0,"msg":"ok","data":{"url":"'+ serverUrl+'/image/'+req.file.filename+'"}}');
+		res.end('{"errno":0,"msg":"ok","data":{"url":"'+ process.env.ROOT_URL +'image/'+req.file.filename+'"}}');
 	});
 });
